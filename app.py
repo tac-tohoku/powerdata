@@ -11,7 +11,7 @@ import mplcursors
 import streamlit as st
 
 # ----- 設定 -----
-DATA_DIR = "data/kanno
+DATA_DIR = "data/kanno"
 
 # ヘッダー
 st.title("FIT Data Interactive Viewer")
