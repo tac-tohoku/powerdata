@@ -13,7 +13,7 @@ import streamlit as st
 # ----- 設定 -----
 # スクリプトファイルのディレクトリを基準に data/kanno を参照
 BASE_DIR = os.path.dirname(__file__)
-DATA_DIR = os.path.join(BASE_DIR, "data", "kanno")
+DATA_DIR = os.path.join(BASE_DIR, "gui", "kanno")
 
 # ディレクトリ存在チェック
 if not os.path.isdir(DATA_DIR):
