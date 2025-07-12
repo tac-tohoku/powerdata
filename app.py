@@ -11,18 +11,28 @@ import mplcursors
 import streamlit as st
 
 # ----- 設定 -----
-DATA_DIR = "data/kanno"
+# スクリプトファイルのディレクトリを基準に data/kanno を参照
+BASE_DIR = os.path.dirname(__file__)
+DATA_DIR = os.path.join(BASE_DIR, "data", "kanno")
+
+# ディレクトリ存在チェック
+if not os.path.isdir(DATA_DIR):
+    st.error(f"データディレクトリが見つかりません: {DATA_DIR}")
+    st.stop()
 
 # ヘッダー
 st.title("FIT Data Interactive Viewer")
 
 # サイドバー：ファイル選択
-pkls = sorted(f for f in os.listdir(DATA_DIR) if f.endswith(".pkl"))
-selected = st.sidebar.selectbox("データファイルを選択", [""] + pkls)
+pkls = sorted([f for f in os.listdir(DATA_DIR) if f.endswith(".pkl")])
+selected = st.sidebar.selectbox("データファイルを選択", [None] + pkls)
+
 
 def load_data(filename):
-    with open(os.path.join(DATA_DIR, filename), "rb") as f:
+    path = os.path.join(DATA_DIR, filename)
+    with open(path, "rb") as f:
         return pickle.load(f)
+
 
 def plot_all(data):
     # データ取り出し
@@ -39,8 +49,10 @@ def plot_all(data):
 
     # Matplotlib Figure
     fig = plt.figure(figsize=(12, 8))
-    fig.suptitle(f"Data analysis ({name}) {formatted_ts0}", x=0.01, y=0.99,
-                 ha='left', fontsize=16, fontweight='bold')
+    fig.suptitle(
+        f"Data analysis ({name}) {formatted_ts0}", x=0.01, y=0.99,
+        ha='left', fontsize=16, fontweight='bold'
+    )
     gs = GridSpec(2, 3, figure=fig, width_ratios=[3,1.2,1.2],
                   hspace=0.15, wspace=0.8)
 
@@ -121,16 +133,15 @@ def plot_all(data):
     for ax in fig.axes:
         mplcursors.cursor(ax, hover=True).connect(
             'add', lambda sel: sel.annotation.set_text(
-                f"{sel.target[0]:%H:%M:%S}\n{sel.target[1]:.2f}")
-        )
+                f"{sel.target[0]:%H:%M:%S}\n{sel.target[1]:.2f}"))
 
     st.pyplot(fig)
+
 
 # ファイルが選択されたら描画
 if selected:
     try:
         data = load_data(selected)
-        # 古い形式チェック
         if isinstance(data, pd.DataFrame):
             st.error("Data format error: please run prepare_gui_data.py before gui_app.py")
         else:
