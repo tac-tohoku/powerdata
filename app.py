@@ -11,7 +11,7 @@ import mplcursors
 import streamlit as st
 
 # ----- 設定 -----
-DATA_DIR = "path/to/gui_data_dir"  # pickleファイルが置いてあるディレクトリを指定
+DATA_DIR = "./data/kanno"  # pickleファイルが置いてあるディレクトリを指定
 
 # ヘッダー
 st.title("FIT Data Interactive Viewer")
