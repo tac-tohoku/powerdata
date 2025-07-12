@@ -11,10 +11,7 @@ import mplcursors
 import streamlit as st
 
 # ----- 設定 -----
-
-BASE_DIR = os.path.dirname(__file__)  # app.py のあるフォルダ
-DATA_DIR = os.path.join(BASE_DIR, "..", "data", "kanno")
-
+DATA_DIR = "data/kanno
 
 # ヘッダー
 st.title("FIT Data Interactive Viewer")
